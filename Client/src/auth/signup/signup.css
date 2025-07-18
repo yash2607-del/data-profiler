@@ -1,0 +1,77 @@
+
+
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f8f9fa;
+}
+
+.auth-container {
+  display: flex;
+  width: 900px;
+  height: 600px;
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+/* Left and right are now perfectly equal */
+.left-section,
+.form-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 40px;
+}
+
+/* Blue panel */
+.left-section {
+  background-color: #4d8cff;
+  color: white;
+  text-align: center;
+}
+
+.left-section h1 {
+  font-size: 32px;
+  margin-bottom: 10px;
+}
+
+.left-section p {
+  margin-bottom: 20px;
+  font-size: 22px;
+}
+
+.login-btn {
+  background-color: white;
+  color: #4d8cff;
+  border: none;
+  padding: 10px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #e0e0e0;
+}
+
+/* Right form */
+.form-section {
+  background-color: white;
+  align-items: center;
+  width: fit-content;
+}
+
+.footer{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #4d8cff;
+  font-size: large;
+  font-weight:bold;
+}
