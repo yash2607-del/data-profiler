@@ -1,6 +1,7 @@
 import React from "react";
 import "./hero.css";
 import hireImg from "/src/assets/hire.png";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
@@ -10,7 +11,11 @@ const Hero = () => {
         <h1 className="heading" style={{ color: "green", fontSize: "64px" }}>
           Welcome Back User
         </h1>
+        <Link to={"/dashboard"} 
+        >        <button className="btn btn-primary mt-3">Go To Dashboard</button></Link>
+        
         <button className="btn btn-primary mt-3">Create Workspace</button>
+
       </div>
       <div className="image-section w-50">
         <img

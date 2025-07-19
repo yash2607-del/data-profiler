@@ -1,82 +1,91 @@
-import React from "react";
-import "./user.css";
-import axios from "axios";
-import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+  import React, { useEffect, useState } from "react";
+  import axios from "axios";
+  import { Link, useNavigate } from "react-router-dom";
+  import { ToastContainer, toast } from "react-toastify";
+  import "react-toastify/dist/ReactToastify.css";
+  import "./user.css";
 
-const User = () => {
-  const [User, setUser] = useState([]);
-  useEffect(() => {
-    const fetchData = async () => {
+  const User = () => {
+    const [users, setUsers] = useState([]);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+          const response = await axios.get("http://localhost:8000/api/users");
+          setUsers(response.data);
+        } catch (error) {
+          console.log("Error while fetching data", error);
+        }
+      };
+      fetchData();
+    }, []);
+
+    const deleteUser = async (userId) => {
       try {
-        const response = await axios.get("http://localhost:8000/api/users");
-        setUser(response.data);
+        await axios.delete(`http://localhost:8000/api/delete/user/${userId}`);
+        setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
+        toast.success("Workspace deleted successfully!", {
+          position: "top-center",
+        });
       } catch (error) {
-        console.log("error while fetching the data", error);
+        console.log("Error while deleting user", error);
+        toast.error("Failed to delete workspace", {
+          position: "top-center",
+        });
       }
     };
-    fetchData();
-  }, []);
 
-  const deleteUser = async (userId) => {
-    await axios
-      .delete(`http://localhost:8000/api/delete/user/${userId}`)
-      .then((response) => {
-        setUsers((prevUser) => prevUser.filter((user) => user._id !== userId));
-        toast.success(response.data.message, { position: "top-right" });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-  return (
-    <div className="userTable">
-      <Link to="/add" type="button" className="btn btn-primary">
-        Add workspace <i className="fa-solid fa-user-plus"></i>
-      </Link>
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th scope="col"> S.No</th>
-            <th scope="col">Workspace Name</th>
-            <th scope="col">Created By</th>
-            <th scope="col">Created On</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {User.map((user, index) => {
-            return (
-              <tr>
+    return (
+     
+      <div className="userTable">
+         <h1>WORKSPACES</h1>
+        <Link to="/add" className="btn btn-primary" type="button">
+          Add workspace <i className="fa-solid fa-user-plus"></i>
+        </Link>
+
+        <table className="table table-bordered">
+          <thead>
+            <tr>
+              <th>S.No</th>
+              <th>Workspace Name</th>
+              <th>Created By</th>
+              <th>Created On</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user, index) => (
+              <tr key={user._id}>
                 <td>{index + 1}</td>
                 <td>{user.Workspace_name}</td>
                 <td>{user.user_name}</td>
                 <td>{user.created_on}</td>
                 <td className="actionButtons">
                   <Link
-                    to={`/update/` + user._id}
-                    type="button"
+                    to={`/update/${user._id}`}
                     className="btn btn-info"
+                    type="button"
                   >
-                    <i className="fa-solid fa-pen-to-square"></i>{" "}
+                    <i className="fa-solid fa-pen-to-square"></i>
                   </Link>
 
                   <button
                     onClick={() => deleteUser(user._id)}
+                    className="btn btn-danger"
                     type="button"
-                    class="btn btn-danger"
                   >
-                    <i class="fa-solid fa-trash"></i>
+                    <i className="fa-solid fa-trash"></i>
                   </button>
                 </td>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
-  );
-};
+            ))}
+          </tbody>
+        </table>
 
-export default User;
+        <ToastContainer position="top-center" autoClose={3000} />
+      </div>
+    );
+  };
+
+  export default User;

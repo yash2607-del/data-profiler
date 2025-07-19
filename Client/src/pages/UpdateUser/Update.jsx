@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import "./update.css";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import toast from "react-hot-toast";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UpdateUser = () => {
   const users = {
@@ -34,11 +35,11 @@ const UpdateUser = () => {
     e.preventDefault();
     try {
       await axios.put(`http://localhost:8000/api/update/user/${id}`, user);
-      toast.success("User updated successfully!", { position: "top-right" });
+      toast.success("User updated successfully!");
       navigate("/workspace");
     } catch (error) {
       console.log(error);
-      toast.error("Update failed", { position: "top-right" });
+      toast.error("Update failed");
     }
   };
 
@@ -75,9 +76,12 @@ const UpdateUser = () => {
           />
         </div>
         <div className="inputGroup">
-          <button type="submit" className="btn btn-primary">Update</button>
+          <button type="submit" className="btn btn-primary">
+            Update
+          </button>
         </div>
       </form>
+      <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );
 };

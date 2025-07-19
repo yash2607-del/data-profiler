@@ -27,14 +27,15 @@ const FeaturesData = [
   },
 ];
 
-const Features = () => {
+const Features = ({ welcomeMessage }) => {
   return (
     <section id="feature">
       <div className="feature-section text-center">
-     
-        <h1 className="feature-heading">
-          Quick Actions
-        </h1>
+        {/* Show welcome message if it exists */}
+        {welcomeMessage && <h1>{welcomeMessage}</h1>}
+
+        {/* Always show Quick Actions heading */}
+        <h1 className="feature-heading">Quick Actions</h1>
         <div className="custom-line mx-auto mt-2"></div>
       </div>
 

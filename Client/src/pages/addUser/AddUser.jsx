@@ -2,14 +2,15 @@ import React, { useState } from "react";
 import "./adduser.css";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import toast from "react-hot-toast";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddUser = () => {
-  const users = {
+  const [user, setUser] = useState({
     Workspace_name: "",
     user_name: "",
-  };
-  const [user, setUser] = useState(users);
+  });
+
   const navigate = useNavigate();
 
   const inputHandler = (e) => {
@@ -22,20 +23,23 @@ const AddUser = () => {
     try {
       await axios.post("http://localhost:8000/api/user", user);
       toast.success("Workspace added successfully!", {
-        position: "top-right",
+        position: "top-center",
       });
-      navigate("/workspace");
+
+      setTimeout(() => {
+        navigate("/workspace");
+      }, 1500); // Delay to show toast before redirecting
     } catch (error) {
       console.log(error);
       toast.error("Failed to add workspace", {
-        position: "top-right",
+        position: "top-center",
       });
     }
   };
 
   return (
     <div className="addUser">
-      <Link to="/workspace" type="button" className="btn btn-secondary">
+      <Link to="/workspace" className="btn btn-secondary" type="button">
         Back
       </Link>
 
@@ -71,6 +75,8 @@ const AddUser = () => {
           </button>
         </div>
       </form>
+      
+      <ToastContainer position="top-center" autoClose={3000} />
     </div>
   );
 };
