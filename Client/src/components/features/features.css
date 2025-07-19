@@ -1,0 +1,66 @@
+#feature {
+  padding:0px 60px 20px;
+  background-color: #f9fafb;
+}
+
+.feature-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.feature-button {
+  background-color: rgb(198, 203, 241);
+  color: rgb(64, 64, 122);
+  border: none;
+  border-radius: 5px;
+  font-size: 18px;
+  padding: 2px 24px;
+  margin-bottom: 15px;
+}
+
+.feature-heading {
+  font-size: 40px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.custom-line {
+  width: 100px;
+  height: 6px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #3b82f6, #60a5fa, #3b82f6);
+  ;
+}
+
+@keyframes scroll {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: 0% 0;
+  }
+}
+
+.wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 0px;
+}
+
+@media (max-width: 768px) {
+  .wrapper {
+    justify-content: center;
+  }
+
+  .features-card {
+    width: 90% !important;
+  }
+}

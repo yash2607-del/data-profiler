@@ -12,5 +12,4 @@ route.delete("/delete/user/:id",Deleteuser);
 
 
 
-
 export default route;
