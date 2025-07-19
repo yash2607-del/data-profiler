@@ -1,5 +1,6 @@
 import React from 'react'
 import './navbar.css';
+import { Link } from 'react-router-dom';
 
 
 const Navbar = () => {
@@ -27,7 +28,8 @@ const Navbar = () => {
       </ul>
 
       <div className="d-flex" style={{marginght: "30px"}}>
-        <button className="btn btn-sm btn-outline-primary login-btn" type="button">Login</button>
+        <Link to="/login"> <button className="btn btn-sm btn-outline-primary login-btn" type="button">Login</button></Link>
+       
         <button className="btn btn-sm btn-outline-primary signup-btn" type="button">Get Started</button>
       </div>
     </div>

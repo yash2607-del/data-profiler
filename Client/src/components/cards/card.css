@@ -1,0 +1,73 @@
+.features-card {
+  width: 22rem;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #f8fafc 0%, #e0e7ff 100%);
+  box-shadow: 0 6px 24px rgba(60, 72, 88, 0.12),
+              0 1.5px 6px rgba(60, 72, 88, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 18px;
+}
+
+.features-card:hover {
+  transform: translateY(-8px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(60, 72, 88, 0.18),
+              0 3px 12px rgba(60, 72, 88, 0.12);
+}
+
+.features-card-icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f1f1f7;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 2rem;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.15);
+}
+
+.features-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 8px;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
+
+.features-card-text {
+  font-size: 1rem;
+  color: #334155;
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.features-card-button-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.features-card-button {
+  padding: 10px 20px;
+  background-color: #4479f7;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(68, 121, 247, 0.3);
+  transition: all 0.3s ease;
+}
+
+.features-card-button:hover {
+  background-color: #305fd9;
+  box-shadow: 0 6px 16px rgba(68, 121, 247, 0.4);
+}

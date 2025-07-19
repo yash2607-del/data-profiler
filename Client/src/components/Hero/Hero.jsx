@@ -1,25 +1,28 @@
 import React from "react";
 import "./hero.css";
 import hireImg from "/src/assets/hire.png";
+import { Link } from "react-router-dom";
 
 const Hero = () => {
   return (
     <>
-      <div className="container-fluid">
+    <div className="container-fluid hero-section d-flex align-items-center">
+      <div className="text-section w-50 p-4">
+        <h1 className="heading" style={{ color: "green", fontSize: "64px" }}>
+          Welcome Back User
+        </h1>
+        <Link to={"/dashboard"} 
+        >        <button className="btn btn-primary mt-3">Go To Dashboard</button></Link>
+        
+      </div>
+      <div className="image-section w-50">
         <img
           src={hireImg}
-          className="rounded float-end w-50 h-100 hero-img"
+          className="img-fluid rounded hero-img"
           alt="landing"
         />
       </div>
-
-      <div className="left">
-        <h1 className="heading"> Welcome to DataProfiler App</h1>
-        <h2 className="subheading">Build.Deploy.Show</h2>
-
-        <p > Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-        <button className="btn btn-primary">Get Started</button>
-      </div>
+    </div>
     </>
   );
 };
