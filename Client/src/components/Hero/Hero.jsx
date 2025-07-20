@@ -13,10 +13,7 @@ const Hero = () => {
         </h1>
         <Link to={"/dashboard"} 
         >        <button className="btn btn-primary mt-3">Go To Dashboard</button></Link>
-        
-        <button className="btn btn-primary mt-3">Create Workspace</button>
-
-      </div>
+        </div>
       <div className="image-section w-50">
         <img
           src={hireImg}

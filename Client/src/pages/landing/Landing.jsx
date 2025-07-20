@@ -1,14 +1,14 @@
-import Hero from "../../components/Hero/Hero";
+import React from "react";
 import Navbar from "../../components/Navbar/Navbar";
-import SideBar from "../../components/SideBar/SideBar";
+import Hero from "../../components/Hero/Hero";
 import Features from "../../components/features/Features";
-
 
 const Landing = () => {
   return (
-    <Navbar/>
-      <Hero/>
-      <Features/>
+    <>
+      <Navbar />
+      <Hero />
+      <Features welcomeMessage="Welcome to DataProfiler" />
     </>
   );
 };

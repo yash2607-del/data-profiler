@@ -19,21 +19,20 @@ const Login = () => {
 
       const data = await res.json();
 
-      if (res.ok) {
-        localStorage.setItem("token", data.token);
-        toast.success("Login successful!");
-
-        // Delay redirect slightly so toast is visible
-        setTimeout(() => {
-          window.location.href = "/Landing";
-        }, 1500);
-      } else {
-        toast.error(data.error || "Login failed");
-      }
+     if (res.ok) {
+  localStorage.setItem("token", data.token);
+  toast.success("Login successful!");
+  setTimeout(() => {
+    window.location.href = "/dashboard";
+  }, 1500);
+} else {
+  toast.error(data.error || "Login failed");
+} 
     } catch (error) {
-      console.log("Error", error);
-      toast.error("Please try again, an error occurred!");
-    }
+      console.error("Login error:", error);
+      toast.error("An error occurred. Please try again.");
+    } 
+
   };
 
   return (
