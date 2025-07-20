@@ -6,6 +6,7 @@ import Landing from "./pages/landing/Landing.jsx";
 import AddUser from "./pages/addUser/AddUser";
 import UpdateUser from "./pages/UpdateUser/Update";
 import Dashboard from "./pages/dashboard/Dashboard.jsx";
+import Home from "./components/Home/Home.jsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/add" element={<AddUser />} /> */
         <Route path="/update/:id" element={<UpdateUser />}/>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/home" element={<Home/>}/>
       </Routes>
     </BrowserRouter>
   );

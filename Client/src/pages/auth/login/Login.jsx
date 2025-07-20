@@ -25,7 +25,7 @@ const Login = () => {
 
         // Delay redirect slightly so toast is visible
         setTimeout(() => {
-          window.location.href = "/Landing";
+          window.location.href = "/Home";
         }, 1500);
       } else {
         toast.error(data.error || "Login failed");

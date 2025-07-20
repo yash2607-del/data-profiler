@@ -9,14 +9,14 @@ const FeaturesData = [
     description: "Start a new interactive space to build your projects or models.",
     icon: <FaUserMd size={30} className="text-primary" />,
     buttonText: "Create Workspace",
-    link: "", // Add your link here
+    link: "/add", 
   },
   {
     title: "View Workspace",
     description: "Access and examine existing workspaces or models with ease.",
     icon: <FaMicroscope size={30} className="text-primary" />,
     buttonText: "View Workspace",
-    link: "", // Add your link here
+    link: "/workspace", 
   },
   {
     title: "Create Connection",
