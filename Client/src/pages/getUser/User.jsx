@@ -39,7 +39,7 @@
     return (
      
       <div className="userTable">
-         <h1>WORKSPACES</h1>
+         <h1> LIST OF WORKSPACES</h1>
         <Link to="/add" className="btn btn-primary" type="button">
           Add workspace <i className="fa-solid fa-user-plus"></i>
         </Link>
