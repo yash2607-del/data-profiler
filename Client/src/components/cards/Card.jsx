@@ -16,7 +16,9 @@ const Card = ({ icon, title, description, buttonText, link }) => {
         </div>
       </div>
     </div>
-  );}
+  );
+};
 export default Card;
+
 
 

@@ -1,14 +1,13 @@
 import React from 'react'
-import './navbar.css';
 import { Link } from 'react-router-dom';
 
 
-const Navbar = () => {
+const Homenav = () => {
   return (
     <>
   <nav className="navbar navbar-expand-lg ">
   <div className="container-fluid">
-    <a className="navbar-brand fw-bold fs-1 mx-3 company-name" href="#">Formon</a>
+    <a className="navbar-brand fw-bold fs-1  mx-3 company-name" href="#">Formon</a>
 
     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
       <span className="navbar-toggler-icon"></span>
@@ -27,11 +26,7 @@ const Navbar = () => {
         </li>
       </ul>
 
-      <div className="d-flex" style={{marginght: "30px"}}>
-        <Link to="/login"> <button className="btn btn-sm btn-outline-primary login-btn" type="button">Login</button></Link>
-       
-        <button className="btn btn-sm btn-outline-primary signup-btn" type="button">Get Started</button>
-      </div>
+     
     </div>
   </div>
 </nav>
@@ -40,4 +35,4 @@ const Navbar = () => {
   )
 }
 
-export default Navbar
+export default Homenav;

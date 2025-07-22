@@ -8,14 +8,22 @@ const FeaturesData = [
     description: "Start a new interactive space to build your projects or models.",
     icon: <FaProjectDiagram size={40} className="text-primary feature-icon" />,
     buttonText: "Create Workspace",
+
     link: "/workspace",
+
+    link: "/add", 
+
   },
   {
     title: "View Workspace",
     description: "Access and examine existing workspaces or models with ease.",
     icon: <FaDatabase size={40} className="text-primary feature-icon" />,
     buttonText: "View Workspace",
+
     link: "/workspace",
+
+    link: "/workspace", 
+
   },
   {
     title: "Create Connection",

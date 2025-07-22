@@ -26,6 +26,20 @@ const Login = () => {
 } else {
   toast.error(data.error || "Login failed");
 } 
+
+
+      if (res.ok) {
+        localStorage.setItem("token", data.token);
+        toast.success("Login successful!");
+
+        // Delay redirect slightly so toast is visible
+        setTimeout(() => {
+          window.location.href = "/Home";
+        }, 1500);
+      } else {
+        toast.error(data.error || "Login failed");
+      }
+
     } catch (error) {
       console.error("Login error:", error);
       toast.error("An error occurred. Please try again.");

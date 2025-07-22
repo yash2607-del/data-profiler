@@ -7,6 +7,7 @@ import route from './routes/UserRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import Auth from "./models/authModel.js";
 
+
 dotenv.config();
 const app = express();
 app.use(express.json());

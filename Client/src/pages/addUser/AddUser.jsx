@@ -44,7 +44,7 @@ const AddUser = () => {
         Back
       </Link>
 
-      <h3>Add New Workspace</h3>
+      <h3>Add new workspace</h3>
       <form className="addUserForm" onSubmit={submitForm}>
         <div className="inputGroup">
           <label htmlFor="Workspace_name">Workspace Name:</label>
