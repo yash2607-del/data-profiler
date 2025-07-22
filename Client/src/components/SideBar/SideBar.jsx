@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ChevronFirst, Home, Settings, User, LogOut } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import "./SideBar.css";
+import axios from "axios";
+import { toast } from "react-toastify";
+import "./sideBar.css";
 
 const navItems = [
   { id: 1, label: "Home", icon: <Home size={18} />, path: "/" },
   { id: 2, label: "Dashboard", icon: <User size={18} />, path: "/dashboard" },
-  { id: 3, label: "Connections", icon: <User size={18} />, path: "/connections" },
+  { id: 3, label: "Connections", icon: <User size={18} />, path: "/connection" },
   { id: 4, label: "Data Pipeline", icon: <User size={18} />, path: "/data-pipeline" },
   { id: 5, label: "Summary", icon: <User size={18} />, path: "/summary" },
   { id: 6, label: "Settings", icon: <Settings size={18} />, path: "/settings" },
@@ -18,18 +20,43 @@ function SideBar() {
   const navigate = useNavigate();
   const activeId = navItems.find((item) => item.path === location.pathname)?.id || 1;
 
-  // Simulated user data - replace with your auth logic
-  const user = {
-    name: "Jane Doe",
-    avatar: "https://i.pravatar.cc/100?img=5",
-  };
+  const [user, setUser] = useState({ name: "", email: "", avatar: "" });
+  const isLoggedIn = Boolean(user.name && user.name !== "Guest");
 
-  const isLoggedIn = Boolean(user); // or check your auth state/token
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setUser({ name: "Guest", email: "", avatar: "" });
+          return;
+        }
+
+        const response = await axios.get("http://localhost:8000/api/profile", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        const { name, email } = response.data;
+         setUser({ name, email, avatar: "/default-avatar.png" });
+      } catch (error) {
+        console.error("Failed to fetch user profile", error);
+        if (error.response?.status === 401) {
+          localStorage.removeItem("token");
+          toast.error("Session expired. Please log in again.");
+          navigate("/login");
+        } else {
+          setUser({ name: "Guest", email: "", avatar: "" });
+        }
+      }
+    };
+
+    fetchUser();
+  }, [navigate]);
 
   const handleLogout = () => {
-    // Clear auth data (update this based on your auth system)
-    localStorage.removeItem("authToken");
-    // Redirect to login page (or wherever you want)
+    localStorage.removeItem("token"); 
     navigate("/login");
   };
 
@@ -68,7 +95,7 @@ function SideBar() {
         </ul>
 
         <div className="sidebar-profile">
-          {!user ? (
+          {!isLoggedIn ? (
             <div
               className="sidebar-item profile-icon"
               title={collapsed ? "Login" : undefined}
@@ -88,7 +115,6 @@ function SideBar() {
           )}
         </div>
 
-        {/* Logout button below profile */}
         {isLoggedIn && !collapsed && (
           <button
             className="sidebar-logout-btn sidebar-item"

@@ -2,6 +2,7 @@ import React from "react";
 import "./card.css";
 
 const Card = ({ icon, title, description, buttonText, link }) => {
+  if (!icon || !title || !description || !buttonText) {}
   return (
     <div className="features-card">
       <div className="features-card-icon">{icon}</div>
@@ -17,5 +18,7 @@ const Card = ({ icon, title, description, buttonText, link }) => {
     </div>
   );
 };
-
 export default Card;
+
+
+

@@ -34,7 +34,7 @@ const UpdateUser = () => {
   const submitForm = async (e) => {
     e.preventDefault();
     try {
-      await axios.put(`http://localhost:8000/api/update/user/${id}`, user);
+    await axios.put(`${import.meta.env.VITE_API_URL}/api/update/user/${id}`, user);
       toast.success("User updated successfully!");
       navigate("/workspace");
     } catch (error) {

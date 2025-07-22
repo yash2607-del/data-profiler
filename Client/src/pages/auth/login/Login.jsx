@@ -11,13 +11,22 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:8000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-
+     const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ email, password }),
+});
       const data = await res.json();
+     if (res.ok) {
+  localStorage.setItem("token", data.token);
+  toast.success("Login successful!");
+  setTimeout(() => {
+    window.location.href = "/dashboard";
+  }, 1500);
+} else {
+  toast.error(data.error || "Login failed");
+} 
+
 
       if (res.ok) {
         localStorage.setItem("token", data.token);
@@ -30,10 +39,12 @@ const Login = () => {
       } else {
         toast.error(data.error || "Login failed");
       }
+
     } catch (error) {
-      console.log("Error", error);
-      toast.error("Please try again, an error occurred!");
-    }
+      console.error("Login error:", error);
+      toast.error("An error occurred. Please try again.");
+    } 
+
   };
 
   return (

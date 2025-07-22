@@ -38,9 +38,7 @@ export const register = async (req, res) => {
     console.error("Registration error:", error);
     res.status(500).json({ error: "Server error during registration" });
   }
-};
-
-export const login = async (req, res) => {
+};export const login = async (req, res) => {
   const { email, password } = req.body;
   console.log("Login attempt:", email);
 
@@ -62,7 +60,11 @@ export const login = async (req, res) => {
       return res.status(500).json({ error: "Server config error" });
     }
 
-    const token = jwt.sign({ userId: user._id, role: user.role }, process.env.JWT_SECRET);
+    const token = jwt.sign(
+      { userId: user._id, email: user.email, role: user.role },
+      process.env.JWT_SECRET
+    );
+
     console.log("Login successful, token issued");
 
     res.json({ message: "Login successful", token, role: user.role });

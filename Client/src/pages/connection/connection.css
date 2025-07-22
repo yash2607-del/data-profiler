@@ -1,0 +1,28 @@
+.connectionTable {
+  padding: 20px;
+}
+
+.connectionTable h1 {
+  margin-bottom: 20px;
+}
+
+.actionButtons button,
+.actionButtons a.btn {
+  margin-right: 8px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table-bordered th,
+.table-bordered td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.table-bordered th {
+  background-color: #f8f9fa;
+  text-align: left;
+}
