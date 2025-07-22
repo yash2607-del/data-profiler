@@ -36,7 +36,7 @@ mongoose
 app.use('/api', route);
 app.use('/api/auth', authRoutes);
 
-// ✅ Protected profile route
+
 app.get("/api/profile", async (req, res) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) return res.status(401).json({ error: "Unauthorized" });

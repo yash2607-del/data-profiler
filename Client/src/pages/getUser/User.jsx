@@ -12,7 +12,7 @@
     useEffect(() => {
       const fetchData = async () => {
         try {
-          const response = await axios.get("http://localhost:8000/api/users");
+         const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users`);
           setUsers(response.data);
         } catch (error) {
           console.log("Error while fetching data", error);

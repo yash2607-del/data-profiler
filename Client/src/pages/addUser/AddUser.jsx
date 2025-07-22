@@ -5,6 +5,7 @@ import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+
 const AddUser = () => {
   const [user, setUser] = useState({
     Workspace_name: "",
@@ -21,7 +22,7 @@ const AddUser = () => {
   const submitForm = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:8000/api/user", user);
+     await axios.post(`${import.meta.env.VITE_API_URL}/api/user`, user);
       toast.success("Workspace added successfully!", {
         position: "top-center",
       });

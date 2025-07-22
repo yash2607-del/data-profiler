@@ -18,11 +18,12 @@ const Dashboard = () => {
           return;
         }
 
-        const response = await axios.get("http://localhost:8000/api/profile", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/profile`, {
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
+
 
         const { name, email } = response.data;
         setUser({ name, email });
