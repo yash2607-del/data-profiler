@@ -5,41 +5,36 @@ import { Link } from "react-router-dom";
 const FeaturesData = [
   {
     title: "Create Workspace",
-    description: "Start a new interactive space to build your projects or models.",
+    description:
+      "Start a new interactive space to build your projects or models.",
     icon: <FaProjectDiagram size={40} className="text-primary feature-icon" />,
     buttonText: "Create Workspace",
-
-    link: "/workspace",
-
-    link: "/add", 
-
+    link: "/add",
   },
   {
     title: "View Workspace",
     description: "Access and examine existing workspaces or models with ease.",
     icon: <FaDatabase size={40} className="text-primary feature-icon" />,
     buttonText: "View Workspace",
-
     link: "/workspace",
-
-    link: "/workspace", 
-
   },
   {
     title: "Create Connection",
-    description: "Collaborate with peers or integrate insights across disciplines.",
+    description:
+      "Collaborate with peers or integrate insights across disciplines.",
     icon: <FaNetworkWired size={40} className="text-primary feature-icon" />,
     buttonText: "Create Connection",
-    link: "/connection",
+    link: "/create-connection",
   },
 ];
-
 
 const Features = ({ welcomeMessage }) => {
   return (
     <section id="feature">
       <div className="feature-section text-center">
-        {welcomeMessage && <h1 className="feature-heading">{welcomeMessage}</h1>}
+        {welcomeMessage && (
+          <h1 className="feature-heading">{welcomeMessage}</h1>
+        )}
         <div className="custom-line mx-auto mt-2"></div>
       </div>
 
