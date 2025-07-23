@@ -8,20 +8,11 @@ import authRoutes from './routes/authRoutes.js';
 import Auth from "./models/authModel.js";
 
 
-const  allowlist = ['http://localhost:5173', 'https://data-profiler.vercel.app/'];
+//const  allowlist = ['http://localhost:5173', 'https://data-profiler.vercel.app/'];
 dotenv.config();
 const app = express();
 app.use(express.json());
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowlist.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-}));
+app.use(cors());
 
 const PORT = process.env.PORT || 7000;
 const MONGOURL = process.env.MONGO_URL;
