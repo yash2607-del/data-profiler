@@ -23,7 +23,7 @@
 
     const deleteUser = async (userId) => {
       try {
-        await axios.delete(`http://localhost:8000/api/delete/user/${userId}`);
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/delete/user/${userId}`);
         setUsers((prevUsers) => prevUsers.filter((user) => user._id !== userId));
         toast.success("Workspace deleted successfully!", {
           position: "top-center",
