@@ -3,7 +3,7 @@ import { ChevronFirst, Home, Settings, User, LogOut } from "lucide-react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
-import "./sideBar.css";
+import "./sidebar.css";
 
 const navItems = [
   { id: 1, label: "Home", icon: <Home size={18} />, path: "/" },
