@@ -8,7 +8,6 @@ import Home from "./pages/home/Home.jsx";
 import UpdateUser from "./pages/UpdateUser/Update";
 import Dashboard from "./pages/dashboard/Dashboard.jsx";
 import Connection from "./pages/connection/Connection.jsx";
-import Home from "./components/Home/Home.jsx";
 
 function App() {
   return (
@@ -24,10 +23,9 @@ function App() {
         <Route path="/update/:id" element={<UpdateUser />}/>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="connection" element={<Connection />} />
-        <Route path="/home" element={<Home/>}/>
       </Routes>
     </BrowserRouter>
   );
-}
+};
 
 export default App;

@@ -17,15 +17,7 @@ const Login = () => {
   body: JSON.stringify({ email, password }),
 });
       const data = await res.json();
-     if (res.ok) {
-  localStorage.setItem("token", data.token);
-  toast.success("Login successful!");
-  setTimeout(() => {
-    window.location.href = "/dashboard";
-  }, 1500);
-} else {
-  toast.error(data.error || "Login failed");
-} 
+
 
 
       if (res.ok) {
@@ -45,6 +37,7 @@ const Login = () => {
       toast.error("An error occurred. Please try again.");
     } 
 
+    console.log("he is so popular in ")
   };
 
   return (

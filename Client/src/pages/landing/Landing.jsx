@@ -10,10 +10,8 @@ const Landing = () => {
 
       <Navbar />
       <Hero />
-      <Features welcomeMessage="Welcome to DataProfiler" />
 
-    <Navbar/>
-      <Hero/>
+  
    
 
     </>
