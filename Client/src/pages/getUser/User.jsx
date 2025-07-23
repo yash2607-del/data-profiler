@@ -37,13 +37,22 @@
     };
 
     return (
-     
-      <div className="userTable">
-         <h1> LIST OF WORKSPACES</h1>
-        <Link to="/add" className="btn btn-primary" type="button">
+<>
+
+  <div className="d-flex justify-content-end mt-3 mx-3">
+  <Link to="/connection" className="btn btn-primary mx-3 "> <i className="fas fa-plus me-2"></i> Create connection</Link>
+   <Link to="/add" className="btn btn-primary" type="button">
           Add workspace <i className="fa-solid fa-user-plus"></i>
         </Link>
 
+</div>
+
+
+  
+     
+      <div className="userTable">
+         <h1 className="d-flex justify-content-center" style={{color:"darkblue"}}> LIST OF WORKSPACES</h1>
+       
         <table className="table table-bordered">
           <thead>
             <tr>
@@ -85,6 +94,8 @@
 
         <ToastContainer position="top-center" autoClose={3000} />
       </div>
+</>
+
     );
   };
 
