@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 import route from './routes/UserRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import Auth from "./models/authModel.js";
+import sfrouter from "./routes/salesforceRoutes.js"
 
 
 //const  allowlist = ['http://localhost:5173', 'https://data-profiler.vercel.app/'];
@@ -38,7 +39,7 @@ mongoose
 app.use('/api', route);
 app.use('/api/auth', authRoutes);
 
-
+app.use('/api/salesforce',sfrouter)
 app.get("/api/profile", async (req, res) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) return res.status(401).json({ error: "Unauthorized" });

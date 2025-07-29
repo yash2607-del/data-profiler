@@ -13,7 +13,7 @@ export const register = async (req, res) => {
   }
 
   try {
-    // Check if user already exists
+    // Check if user already exists 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: "Email already exists" });
@@ -38,7 +38,8 @@ export const register = async (req, res) => {
     console.error("Registration error:", error);
     res.status(500).json({ error: "Server error during registration" });
   }
-};export const login = async (req, res) => {
+};
+export const login = async (req, res) => {
   const { email, password } = req.body;
   console.log("Login attempt:", email);
 

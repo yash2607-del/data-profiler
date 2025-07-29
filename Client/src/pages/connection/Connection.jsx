@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import "./connection.css"; // optional custom styling
+import React, { useState, useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import "./connection.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -20,6 +20,23 @@ const Connection = () => {
     },
   ]);
 
+  const location = useLocation();
+
+  useEffect(() => {
+    const query = new URLSearchParams(location.search);
+    const token = query.get("token");
+
+    if (token) {
+      localStorage.setItem("sf_access_token", token);
+      toast.success("Salesforce connected!", { position: "top-center" });
+    }
+  }, [location]);
+
+  const connectSalesforce = () => {
+    window.location.href =
+      "https://data-profiler-8vwf.onrender.com/api/salesforce/auth";
+  };
+
   const deleteConnection = (id) => {
     setConnections((prev) => prev.filter((conn) => conn.id !== id));
     toast.success("Connection deleted", { position: "top-center" });
@@ -29,9 +46,14 @@ const Connection = () => {
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2>Connections</h2>
-        <Link to="/add-connection" className="btn btn-primary">
-          <i className="fas fa-plus me-2"></i> Add Connection
-        </Link>
+        <div className="d-flex gap-2">
+          <Link to="/add-connection" className="btn btn-primary">
+            <i className="fas fa-plus me-2"></i> Add Connection
+          </Link>
+          <button className="btn btn-success" onClick={connectSalesforce}>
+            <i className="fab fa-salesforce me-2"></i> Connect Salesforce
+          </button>
+        </div>
       </div>
 
       <div className="table-responsive">
