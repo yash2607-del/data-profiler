@@ -26,10 +26,7 @@ sfrouter.get("/callback", async (req, res) => {
   try {
     await conn.authorize(req.query.code);
     const identity = await conn.identity();
-
     console.log("Salesforce user:", identity);
-
-    // Redirect or respond
     res.redirect(`https://data-profiler.vercel.app/connection?token=${conn.accessToken}`);
   } catch (error) {
     console.error("Salesforce auth error:", error.message);
