@@ -6,7 +6,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import "./dashboard.css";
 
-const Dashboard = () => {
+const Dashboard = () => { 
   const [user, setUser] = useState({ name: "", email: "" });
 
   useEffect(() => {

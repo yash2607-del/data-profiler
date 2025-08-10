@@ -9,6 +9,7 @@ import UpdateUser from "./pages/UpdateUser/Update";
 import Dashboard from "./pages/dashboard/Dashboard.jsx";
 import Connection from "./pages/connection/Connection.jsx";
 import CreateConnection from "./pages/createConnection/CreateConnection.jsx";
+import SfSuccess from "./pages/SfSucess/SfSuccess.jsx";
 
 function App() {
   return (
@@ -25,6 +26,8 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="connection" element={<Connection />} />
         <Route path="/create-connection" element={<CreateConnection/>}/>
+        <Route path="/sf-success" element={<SfSuccess />} />
+
       </Routes>
     </BrowserRouter>
   );

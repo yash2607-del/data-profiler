@@ -8,9 +8,45 @@ const CreateConnection = () => {
   const [clientId, setClientId] = useState("");
   const [clientSecret, setClientSecret] = useState("");
   const [callbackUrl, setCallbackUrl] = useState("");
+setCallbackUrl("https://data-profiler-8vwf.onrender.com/api/salesforce/callback")
 
-  const handleValidate = () => {
-    alert("Validated & Next");
+  const [authUrl, setAuthUrl] = useState(null); // Store Salesforce auth URL
+
+  const handleValidate = async () => {
+    if (!clientId || !clientSecret || !callbackUrl || source !== "salesforce") {
+      alert("Please fill all Salesforce fields correctly.");
+      return;
+    }
+
+    try {
+      const res = await fetch("https://data-profiler-8vwf.onrender.com/api/salesforce/auth/start", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          clientId,
+          clientSecret,
+          callbackUrl,
+          environment,
+        }),
+        credentials: "include",
+      });
+
+      const data = await res.json();
+      if (data.authUrl) {
+        setAuthUrl(data.authUrl); // Save the auth URL instead of redirecting
+      } else {
+        alert("Failed to initiate Salesforce auth.");
+      }
+    } catch (err) {
+      console.error("Error:", err);
+      alert("Salesforce auth error.");
+    }
+  };
+
+  const handleSalesforceConnect = () => {
+    if (authUrl) {
+      window.location.href = authUrl;
+    }
   };
 
   return (
@@ -20,7 +56,7 @@ const CreateConnection = () => {
         justifyContent: "center",
         alignItems: "center",
         minHeight: "100vh",
-        backgroundColor: "#eaeaea", // Optional background
+        backgroundColor: "#eaeaea",
       }}
     >
       <div
@@ -30,7 +66,7 @@ const CreateConnection = () => {
           borderRadius: "4px",
           fontFamily: "Arial, sans-serif",
           backgroundColor: "#f9f9f9",
-          boxShadow: "0 4px 10px rgba(0,0,0,0.1)", // Optional shadow for better look
+          boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
         }}
       >
         {/* Header */}
@@ -137,7 +173,7 @@ const CreateConnection = () => {
               type="text"
               value={callbackUrl}
               onChange={(e) => setCallbackUrl(e.target.value)}
-              placeholder="callback URL"
+              placeholder="Callback URL"
               style={styles.input}
             />
           </div>
@@ -147,7 +183,7 @@ const CreateConnection = () => {
         <div
           style={{
             display: "flex",
-            justifyContent: "flex-end",
+            justifyContent: authUrl ? "space-between" : "flex-end",
             padding: "15px 20px",
             borderTop: "1px solid #ccc",
           }}
@@ -158,7 +194,7 @@ const CreateConnection = () => {
               color: "#fff",
               border: "none",
               padding: "8px 16px",
-              marginRight: "10px",
+              marginRight: authUrl ? "0" : "10px",
               borderRadius: "4px",
               cursor: "pointer",
             }}
@@ -166,19 +202,38 @@ const CreateConnection = () => {
           >
             Cancel
           </button>
-          <button
-            style={{
-              backgroundColor: "#4d8cff",
-              color: "#fff",
-              border: "none",
-              padding: "8px 16px",
-              borderRadius: "4px",
-              cursor: "pointer",
-            }}
-            onClick={handleValidate}
-          >
-            Validate & Next
-          </button>
+
+          <div style={{ display: "flex", gap: "10px" }}>
+            {authUrl && (
+              <button
+                style={{
+                  backgroundColor: "#28a745",
+                  color: "#fff",
+                  border: "none",
+                  padding: "8px 16px",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+                onClick={handleSalesforceConnect}
+              >
+                Connect to Salesforce
+              </button>
+            )}
+
+            <button
+              style={{
+                backgroundColor: "#4d8cff",
+                color: "#fff",
+                border: "none",
+                padding: "8px 16px",
+                borderRadius: "4px",
+                cursor: "pointer",
+              }}
+              onClick={handleValidate}
+            >
+              Validate & Next
+            </button>
+          </div>
         </div>
       </div>
     </div>

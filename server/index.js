@@ -3,21 +3,42 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
+import session from "express-session";
+
 import route from './routes/UserRoutes.js';
 import authRoutes from './routes/authRoutes.js';
 import Auth from "./models/authModel.js";
-import sfrouter from "./routes/salesforceRoutes.js"
+import sfrouter from "./routes/salesforceRoutes.js";
 
-
-//const  allowlist = ['http://localhost:5173', 'https://data-profiler.vercel.app/'];
 dotenv.config();
-const app = express();
-app.use(express.json());
-app.use(cors());
 
+const app = express();
 const PORT = process.env.PORT || 7000;
 const MONGOURL = process.env.MONGO_URL;
 const JWT_SECRET = process.env.JWT_SECRET;
+
+app.use(express.json());
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://data-profiler.vercel.app"],
+    credentials: true,
+  })
+);
+
+
+app.use(session({
+  secret: process.env.CLIENT_SECRET || "fallback_secret",
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    secure: false,
+    maxAge: 3600000,
+  },
+}));
+
+app.use('/api', route);
+app.use('/api/auth', authRoutes);
+app.use('/api/salesforce', sfrouter); 
 
 if (!JWT_SECRET || !MONGOURL) {
   console.error("Environment variables missing! Check your .env file.");
@@ -36,10 +57,7 @@ mongoose
     console.error("MongoDB connection error:", error);
   });
 
-app.use('/api', route);
-app.use('/api/auth', authRoutes);
-
-app.use('/api/salesforce',sfrouter)
+// ✅ Authenticated Profile Endpoint
 app.get("/api/profile", async (req, res) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) return res.status(401).json({ error: "Unauthorized" });

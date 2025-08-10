@@ -1,37 +1,77 @@
 import express from "express";
-import jsforce from "jsforce";
+import axios from "axios";
+import querystring from "querystring";
 
-const sfrouter = express.Router();
+const router = express.Router();
 
-sfrouter.get("/auth", (req, res) => {
-  const oauth2 = new jsforce.OAuth2({
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    redirectUri: process.env.REDIRECT_URI,
+const {
+  CLIENT_ID,
+  CLIENT_SECRET,
+  REDIRECT_URI,
+  SF_LOGIN_URL
+} = process.env;
+
+// Step 1: Redirect to Salesforce OAuth page
+router.get("/connect", (req, res) => {
+  if (!CLIENT_ID || !REDIRECT_URI) {
+    return res.status(500).send("Salesforce env vars missing");
+  }
+
+  const params = querystring.stringify({
+    response_type: "code",
+    client_id: CLIENT_ID,
+    redirect_uri: REDIRECT_URI,
+    // scope: "api refresh_token offline_access" // optional
   });
 
-  const url = oauth2.getAuthorizationUrl({});
-  res.redirect(url);
+  res.redirect(`${SF_LOGIN_URL}/services/oauth2/authorize?${params}`);
 });
 
-sfrouter.get("/callback", async (req, res) => {
-  const oauth2 = new jsforce.OAuth2({
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.CLIENT_SECRET,
-    redirectUri: process.env.REDIRECT_URI,
-  });
-
-  const conn = new jsforce.Connection({ oauth2 });
+// Step 2: OAuth callback from Salesforce
+router.get("/callback", async (req, res) => {
+  const { code } = req.query;
+  if (!code) return res.status(400).send("Missing code from Salesforce");
 
   try {
-    await conn.authorize(req.query.code);
-    const identity = await conn.identity();
-    console.log("Salesforce user:", identity);
-    res.redirect(`https://data-profiler.vercel.app/connection?token=${conn.accessToken}`);
-  } catch (error) {
-    console.error("Salesforce auth error:", error.message);
-    res.status(500).send("Salesforce authentication failed.");
+    const tokenResp = await axios.post(
+      `${SF_LOGIN_URL}/services/oauth2/token`,
+      querystring.stringify({
+        grant_type: "authorization_code",
+        code,
+        client_id: CLIENT_ID,
+        client_secret: CLIENT_SECRET,
+        redirect_uri: REDIRECT_URI,
+      }),
+      { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
+    );
+
+    const { access_token, refresh_token, instance_url } = tokenResp.data;
+    req.session.salesforce = { access_token, refresh_token, instance_url };
+
+    // Redirect to frontend success page
+    res.redirect("https://data-profiler.vercel.app/sf-success");
+  } catch (err) {
+    console.error("Salesforce token error:", err.response?.data || err.message);
+    res.status(500).send("Salesforce OAuth failed");
   }
 });
 
-export default sfrouter;
+// Step 3: Example - fetch Salesforce objects
+router.get("/objects", async (req, res) => {
+  const sf = req.session.salesforce;
+  if (!sf || !sf.access_token) {
+    return res.status(401).json({ error: "Not connected to Salesforce" });
+  }
+
+  try {
+    const resp = await axios.get(`${sf.instance_url}/services/data/v60.0/sobjects`, {
+      headers: { Authorization: `Bearer ${sf.access_token}` },
+    });
+    res.json(resp.data.sobjects);
+  } catch (err) {
+    console.error("Fetch objects error:", err.response?.data || err.message);
+    res.status(500).json({ error: "Failed to fetch objects" });
+  }
+});
+
+export default router;
