@@ -24,9 +24,11 @@ function App() {
         <Route path="/add" element={<AddUser />} /> */
         <Route path="/update/:id" element={<UpdateUser />}/>
         <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="connection" element={<Connection />} />
-        <Route path="/create-connection" element={<CreateConnection/>}/>
-        <Route path="/sf-success" element={<SfSuccess />} />
+  
+  <Route path="/connection" element={<Connection />} />
+  <Route path="/add-connection" element={<CreateConnection />} />
+  <Route path="/sf-success" element={<SfSuccess />} />
+
 
       </Routes>
     </BrowserRouter>

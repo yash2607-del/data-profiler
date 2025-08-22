@@ -1,32 +1,19 @@
-import { useEffect, useState } from "react";
+// frontend/src/pages/SFSuccess.jsx
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function SfSuccess() {
-  const [leads, setLeads] = useState([]);
-  const [error, setError] = useState("");
-
-  useEffect(() => {
-    fetch("https://data-profiler-8vwf.onrender.com/api/salesforce/objects/leads", {
-      credentials: "include"
-    })
-      .then(res => res.json())
-      .then(data => setLeads(data.records || []))
-      .catch(err => {
-        console.error("Fetch error:", err);
-        setError("Failed to fetch leads.");
-      });
-  }, []);
+export default function SFSuccess() {
+  const navigate = useNavigate();
 
   return (
-    <div>
-      <h2>Salesforce Leads</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <ul>
-        {leads.map(lead => (
-          <li key={lead.Id}>
-            {lead.FirstName} {lead.LastName} - {lead.Email}
-          </li>
-        ))}
-      </ul>
+    <div style={{ textAlign: "center", marginTop: "100px" }}>
+      <h2>✅ Salesforce Connected Successfully!</h2>
+      <button
+        style={{ marginTop: "20px" }}
+        onClick={() => navigate("/connections")}
+      >
+        Go to Connections
+      </button>
     </div>
   );
 }
