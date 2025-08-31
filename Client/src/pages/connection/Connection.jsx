@@ -26,10 +26,11 @@ const Connection = () => {
   }, [location]);
 
   // Start Salesforce OAuth
-  const connectSalesforce = () => {
-    const appToken = localStorage.getItem("token"); // your app JWT
-    window.location.href = `https://data-profiler-8vwf.onrender.com/api/salesforce/connect?state=${encodeURIComponent(appToken)}`;
-  };
+const connectSalesforce = () => {
+  const appToken = localStorage.getItem("token"); // your app JWT
+  window.location.href = `https://data-profiler-8vwf.onrender.com/api/salesforce/connect`;
+};
+
 
   // Fetch Salesforce objects after connection
   const fetchSfObjects = async () => {

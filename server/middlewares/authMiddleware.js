@@ -1,15 +1,27 @@
+// middlewares/auth.js
 import jwt from "jsonwebtoken";
-const JWT_SECRET = process.env.JWT_SECRET;
 
-export function verifyJWTHeader(req, res, next) {
-  const auth = req.headers.authorization;
-  if (!auth || !auth.startsWith("Bearer ")) return res.status(401).json({ error: "Missing token" });
-  const token = auth.split(" ")[1];
+export const getUserId = (req, res, next) => {
+  let token;
+
+  // Priority 1: Authorization header
+  if (req.headers.authorization) {
+    token = req.headers.authorization.split(" ")[1];
+  }
+  // Priority 2: query param (for redirect flows)
+  else if (req.query.auth) {
+    token = req.query.auth;
+  }
+
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized - No token provided" });
+  }
+
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
-    req.user = decoded;
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    req.userId = decoded.userId || decoded.id || decoded.email;
     next();
   } catch (err) {
-    return res.status(401).json({ error: "Invalid token" });
+    return res.status(401).json({ error: "Unauthorized - Invalid token" });
   }
-}
+};

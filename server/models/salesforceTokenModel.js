@@ -1,11 +1,29 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const SalesforceTokenSchema = new mongoose.Schema({
-  userId: { type: String, required: true },
-  accessToken: { type: String, required: true },
-  refreshToken: { type: String },
-  instanceUrl: { type: String, required: true },
-  expiresAt: { type: Date }
+const salesforceTokenSchema = new mongoose.Schema({
+  userId: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  accessToken: {
+    type: String,
+    required: true
+  },
+  refreshToken: {
+    type: String,
+    required: true
+  },
+  instanceUrl: {
+    type: String,
+    required: true
+  },
+  expiresAt: {
+    type: Date,
+    default: () => new Date(Date.now() + 3600000)
+  }
+}, {
+  timestamps: true
 });
 
-export default mongoose.model("SalesforceToken", SalesforceTokenSchema);
+export default mongoose.model('SalesforceToken', salesforceTokenSchema);
