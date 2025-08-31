@@ -1,27 +1,16 @@
-// middlewares/auth.js
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
 export const getUserId = (req, res, next) => {
-  let token;
+  const authHeader = req.headers.authorization || req.query.auth;
+  if (!authHeader) return res.status(401).json({ error: 'Unauthorized - No token' });
 
-  // Priority 1: Authorization header
-  if (req.headers.authorization) {
-    token = req.headers.authorization.split(" ")[1];
-  }
-  // Priority 2: query param (for redirect flows)
-  else if (req.query.auth) {
-    token = req.query.auth;
-  }
-
-  if (!token) {
-    return res.status(401).json({ error: "Unauthorized - No token provided" });
-  }
+  const token = authHeader.split ? authHeader.split(' ')[1] : authHeader;
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.userId || decoded.id || decoded.email;
+    req.userId = decoded.userId || decoded.id;
     next();
-  } catch (err) {
-    return res.status(401).json({ error: "Unauthorized - Invalid token" });
+  } catch {
+    res.status(401).json({ error: 'Unauthorized - Invalid token' });
   }
 };

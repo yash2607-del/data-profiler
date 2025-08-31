@@ -25,11 +25,11 @@ const Connection = () => {
     ]);
   }, [location]);
 
-  // Start Salesforce OAuth
 const connectSalesforce = () => {
-  const appToken = localStorage.getItem("token");
-  window.location.href = `https://data-profiler-8vwf.onrender.com/api/salesforce/connect?auth=${appToken}`;
+  const token = localStorage.getItem('token'); // your app JWT
+  window.location.href = `https://data-profiler-8vwf.onrender.com/api/salesforce/connect?auth=${token}`;
 };
+
 
 
 
