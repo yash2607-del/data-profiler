@@ -1,6 +1,6 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
-import SalesforceService from '../services/salesforceService.js';
+import SalesforceService from '../services/salesforceServices.js';
 import SalesforceToken from '../models/salesforceTokenModel.js';
 
 const router = express.Router();
