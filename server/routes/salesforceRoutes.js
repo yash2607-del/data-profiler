@@ -2,7 +2,7 @@ import express from 'express';
 import jwt from 'jsonwebtoken';
 import SalesforceService from '../services/salesforceServices.js';
 import SalesforceToken from '../models/salesforceTokenModel.js';
-import { getUserId } from '../middlewares/getUserId.js';
+import { getUserId } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
 
