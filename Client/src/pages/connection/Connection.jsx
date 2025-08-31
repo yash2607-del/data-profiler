@@ -25,15 +25,11 @@ const Connection = () => {
     ]);
   }, [location]);
 const connectSalesforce = () => {
-  const token = localStorage.getItem('token'); // your app JWT
-  if (!token) {
-    toast.error('Not logged in');
-    return;
-  }
-  // Pass token in query param so backend can read it
+  const token = localStorage.getItem('token'); // JWT
+  if (!token) return toast.error('Not logged in');
+
   window.location.href = `https://data-profiler-8vwf.onrender.com/api/salesforce/connect?auth=${token}`;
 };
-
 
 
 

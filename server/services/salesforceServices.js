@@ -1,57 +1,33 @@
-import jsforce from 'jsforce';
-import SalesforceToken from '../models/salesforceTokenModel.js';
+import axios from 'axios';
+import qs from 'qs';
 
-class SalesforceService {
-  constructor() {
-    this.oauth2 = new jsforce.OAuth2({
-      clientId: process.env.SALESFORCE_CLIENT_ID,
-      clientSecret: process.env.SALESFORCE_CLIENT_SECRET,
-      redirectUri: process.env.SALESFORCE_REDIRECT_URI,
-      loginUrl: process.env.SALESFORCE_LOGIN_URL
+const CLIENT_ID = process.env.SF_CLIENT_ID;
+const CLIENT_SECRET = process.env.SF_CLIENT_SECRET;
+const REDIRECT_URI = process.env.SF_REDIRECT_URI;
+
+const SalesforceService = {
+  getAuthUrl: (state) => {
+    return `https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=api id profile email refresh_token&state=${state}`;
+  },
+
+  handleCallback: async (code) => {
+    const body = {
+      grant_type: 'authorization_code',
+      code,
+      client_id: CLIENT_ID,
+      client_secret: CLIENT_SECRET,
+      redirect_uri: REDIRECT_URI,
+    };
+    const res = await axios.post('https://login.salesforce.com/services/oauth2/token', qs.stringify(body), {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
     });
-  }
 
-  getAuthUrl(state = '') {
-    return this.oauth2.getAuthorizationUrl({
-      scope: 'api id profile email address phone refresh_token',
-      state: state
-    });
-  }
-
-  async handleCallback(code) {
-    const conn = new jsforce.Connection({ oauth2: this.oauth2 });
-    await conn.authorize(code);  // exchanges code for access token
     return {
-      accessToken: conn.accessToken,
-      refreshToken: conn.refreshToken,
-      instanceUrl: conn.instanceUrl
+      accessToken: res.data.access_token,
+      refreshToken: res.data.refresh_token,
+      instanceUrl: res.data.instance_url
     };
   }
+};
 
-  async getConnection(userId) {
-    const tokenData = await SalesforceToken.findOne({ userId });
-    if (!tokenData) throw new Error('No Salesforce connection found');
-
-    if (new Date() > tokenData.expiresAt) {
-      const conn = new jsforce.Connection({ oauth2: this.oauth2 });
-      const result = await conn.refresh(tokenData.refreshToken);
-      await SalesforceToken.findOneAndUpdate(
-        { userId },
-        { accessToken: result.access_token, instanceUrl: result.instance_url, expiresAt: new Date(Date.now() + 3600000) }
-      );
-      return new jsforce.Connection({
-        oauth2: this.oauth2,
-        accessToken: result.access_token,
-        instanceUrl: result.instance_url
-      });
-    }
-
-    return new jsforce.Connection({
-      oauth2: this.oauth2,
-      accessToken: tokenData.accessToken,
-      instanceUrl: tokenData.instanceUrl
-    });
-  }
-}
-
-export default new SalesforceService();
+export default SalesforceService;
