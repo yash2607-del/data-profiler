@@ -1,33 +1,39 @@
-import axios from 'axios';
-import qs from 'qs';
+import dotenv from "dotenv";
+dotenv.config();
 
-const CLIENT_ID = process.env.SF_CLIENT_ID;
-const CLIENT_SECRET = process.env.SF_CLIENT_SECRET;
-const REDIRECT_URI = process.env.SF_REDIRECT_URI;
+class SalesforceService {
+  static getAuthUrl(state) {
+    const baseUrl = process.env.SALESFORCE_LOGIN_URL;
+    const clientId = process.env.SF_CLIENT_ID;
+    const redirectUri = process.env.SF_REDIRECT_URI;
 
-const SalesforceService = {
-  getAuthUrl: (state) => {
-    return `https://login.salesforce.com/services/oauth2/authorize?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&scope=api id profile email refresh_token&state=${state}`;
-  },
+    if (!clientId || !redirectUri) {
+      throw new Error("Missing Salesforce ENV vars");
+    }
 
-  handleCallback: async (code) => {
-    const body = {
-      grant_type: 'authorization_code',
-      code,
-      client_id: CLIENT_ID,
-      client_secret: CLIENT_SECRET,
-      redirect_uri: REDIRECT_URI,
-    };
-    const res = await axios.post('https://login.salesforce.com/services/oauth2/token', qs.stringify(body), {
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-    });
-
-    return {
-      accessToken: res.data.access_token,
-      refreshToken: res.data.refresh_token,
-      instanceUrl: res.data.instance_url
-    };
+    return `${baseUrl}/services/oauth2/authorize?response_type=code&client_id=${clientId}&redirect_uri=${encodeURIComponent(
+      redirectUri
+    )}&scope=api%20id%20profile%20email%20refresh_token&state=${state}`;
   }
-};
+
+  static async handleCallback(code) {
+    // Use SF_CLIENT_ID and SF_CLIENT_SECRET here too
+    const tokenUrl = `${process.env.SALESFORCE_LOGIN_URL}/services/oauth2/token`;
+    const params = new URLSearchParams();
+    params.append("grant_type", "authorization_code");
+    params.append("code", code);
+    params.append("client_id", process.env.SF_CLIENT_ID);
+    params.append("client_secret", process.env.SF_CLIENT_SECRET);
+    params.append("redirect_uri", process.env.SF_REDIRECT_URI);
+
+    const res = await fetch(tokenUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: params
+    });
+    if (!res.ok) throw new Error(`Salesforce token fetch failed: ${res.status}`);
+    return res.json(); // contains access_token, refresh_token, instance_url
+  }
+}
 
 export default SalesforceService;

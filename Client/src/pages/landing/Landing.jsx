@@ -7,13 +7,8 @@ import Features from "../../components/features/Features";
 const Landing = () => {
   return (
     <>
-
       <Navbar />
       <Hero />
-
-  
-   
-
     </>
   );
 };

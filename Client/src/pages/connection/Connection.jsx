@@ -24,33 +24,17 @@ const Connection = () => {
   }, [location]);
 
   // Connect Salesforce
-  const connectSalesforce = async () => {
-    const token = localStorage.getItem("token"); // app JWT
-    if (!token) {
-      toast.error("Not logged in");
-      return;
-    }
+const connectSalesforce = () => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    toast.error("Not logged in");
+    return;
+  }
 
-    try {
-      const res = await fetch(
-        "https://data-profiler-8vwf.onrender.com/api/salesforce/connect",
-        {
-          method: "GET",
-          headers: { Authorization: `Bearer ${token}` },
-          redirect: "follow",
-        }
-      );
+  // Direct browser redirect, not fetch
+  window.location.href = `https://data-profiler-8vwf.onrender.com/api/salesforce/connect?auth=${token}`;
+};
 
-      if (res.redirected) {
-        window.location.href = res.url; // go to Salesforce login
-      } else {
-        toast.error("Failed to connect Salesforce");
-      }
-    } catch (err) {
-      toast.error("Error connecting to Salesforce");
-      console.error(err);
-    }
-  };
 
   // Fetch Salesforce objects
   const fetchSfObjects = async () => {
