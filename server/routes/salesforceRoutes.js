@@ -21,18 +21,18 @@ export const getUserId = (req, res, next) => {
   }
 };
 
+// Connect to Salesforce
 router.get('/connect', getUserId, (req, res) => {
   try {
     const state = jwt.sign({ userId: req.userId }, process.env.JWT_SECRET, { expiresIn: '1h' });
     const authUrl = SalesforceService.getAuthUrl(state);
     console.log("Redirecting to Salesforce:", authUrl);
-    res.redirect(authUrl); // should go to Salesforce login now
+    res.redirect(authUrl); // ✅ Redirects to Salesforce login
   } catch (error) {
     console.error('OAuth initiation error:', error);
     res.status(500).json({ error: 'Failed to initiate Salesforce OAuth' });
   }
 });
-
 
 // Salesforce OAuth callback
 router.get('/callback', async (req, res) => {
@@ -50,9 +50,9 @@ router.get('/callback', async (req, res) => {
       { userId },
       {
         userId,
-        accessToken: result.accessToken,
-        refreshToken: result.refreshToken,
-        instanceUrl: result.instanceUrl,
+        accessToken: result.access_token,   // ✅ corrected key
+        refreshToken: result.refresh_token, // ✅ corrected key
+        instanceUrl: result.instance_url,   // ✅ corrected key
         expiresAt: new Date(Date.now() + 3600000)
       },
       { upsert: true, new: true }
@@ -66,4 +66,3 @@ router.get('/callback', async (req, res) => {
 });
 
 export default router;
-  

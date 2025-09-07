@@ -1,4 +1,5 @@
 import dotenv from "dotenv";
+import fetch from "node-fetch"; // make sure node-fetch is installed
 dotenv.config();
 
 class SalesforceService {
@@ -17,7 +18,6 @@ class SalesforceService {
   }
 
   static async handleCallback(code) {
-    // Use SF_CLIENT_ID and SF_CLIENT_SECRET here too
     const tokenUrl = `${process.env.SALESFORCE_LOGIN_URL}/services/oauth2/token`;
     const params = new URLSearchParams();
     params.append("grant_type", "authorization_code");
@@ -29,10 +29,11 @@ class SalesforceService {
     const res = await fetch(tokenUrl, {
       method: "POST",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: params
+      body: params.toString(),
     });
+
     if (!res.ok) throw new Error(`Salesforce token fetch failed: ${res.status}`);
-    return res.json(); // contains access_token, refresh_token, instance_url
+    return res.json(); // ✅ returns access_token, refresh_token, instance_url
   }
 }
 
