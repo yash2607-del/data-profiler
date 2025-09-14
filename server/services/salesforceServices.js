@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import fetch from "node-fetch"; // make sure node-fetch is installed
+import SalesforceToken from "../models/salesforceTokenModel.js"; // ✅ import your token model
 dotenv.config();
 
 class SalesforceService {
@@ -34,6 +35,29 @@ class SalesforceService {
 
     if (!res.ok) throw new Error(`Salesforce token fetch failed: ${res.status}`);
     return res.json(); // ✅ returns access_token, refresh_token, instance_url
+  }
+
+  static async fetchObjects(userId) {
+    // Find stored tokens for this user
+    const tokenData = await SalesforceToken.findOne({ userId });
+    if (!tokenData) throw new Error("No Salesforce token found");
+
+    const { accessToken, instanceUrl } = tokenData;
+
+    // Example: fetch available objects (sObjects)
+    const res = await fetch(`${instanceUrl}/services/data/v57.0/sobjects`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      throw new Error(`Failed to fetch objects: ${res.status} ${errText}`);
+    }
+
+    return res.json();
   }
 }
 

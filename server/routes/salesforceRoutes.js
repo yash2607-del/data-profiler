@@ -64,5 +64,15 @@ router.get('/callback', async (req, res) => {
     res.redirect('https://data-profiler.vercel.app/dashboard?error=salesforce_auth_failed');
   }
 });
+// Fetch Salesforce objects
+router.get('/objects', getUserId, async (req, res) => {
+  try {
+    const objects = await SalesforceService.fetchObjects(req.userId);
+    res.json(objects);
+  } catch (err) {
+    console.error('Fetch objects error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
 
 export default router;
