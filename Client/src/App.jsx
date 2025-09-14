@@ -10,6 +10,7 @@ import Dashboard from "./pages/dashboard/Dashboard.jsx";
 import Connection from "./pages/connection/Connection.jsx";
 import CreateConnection from "./pages/createConnection/CreateConnection.jsx";
 import SfSuccess from "./pages/SfSucess/SfSuccess.jsx";
+import SalesforceObjects from "./pages/objects/SalesforceObjects.jsx";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/add" element={<AddUser />} /> */
         <Route path="/update/:id" element={<UpdateUser />}/>
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/objects" element={<SalesforceObjects />} />
   
   <Route path="/connection" element={<Connection />} />
   <Route path="/add-connection" element={<CreateConnection />} />
